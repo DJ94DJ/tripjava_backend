@@ -12,12 +12,12 @@ import lombok.*;
 @Table(name="checklist")
 public class ChecklistEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "checklist_no", nullable = false)
     private long checklist_no;
 
     @ManyToOne
-    @JoinColumn(name = "planner_no", referencedColumnName = "planner_no")
+    @JoinColumn(name = "planner_no")
     private PlannerEntity planner;
 
     @Column(name = "ingredient", nullable = false, length = 50)

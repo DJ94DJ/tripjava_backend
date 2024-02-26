@@ -24,8 +24,8 @@ public class ItineraryController {
     
     // itinerary 추가하기
     @PostMapping("/add")
-    public ResponseEntity<ItineraryEntity> addItinerary(@RequestBody ItineraryEntity itinerary) {
-        ItineraryEntity savedItinerary = itineraryService.saveItinerary(itinerary);
+    public ResponseEntity<ItineraryEntity> addItinerary(@RequestBody ItineraryEntity itineraryEntity) {
+        ItineraryEntity savedItinerary = itineraryService.saveItinerary(itineraryEntity);
         return new ResponseEntity<>(savedItinerary, HttpStatus.CREATED);
     }
 
@@ -44,10 +44,14 @@ public class ItineraryController {
     }
 
 
-    @DeleteMapping("del/{id}")
+    @DeleteMapping("/del/{id}")
     public ResponseEntity<String> deleteItineraryById(@PathVariable Long id) {
-        itineraryService.deleteItineraryById(id);
-        return new ResponseEntity<>("Itinerary deleted successfully", HttpStatus.OK);
+        try {
+            itineraryService.deleteItineraryById(id);
+            return new ResponseEntity<>("Itinerary deleted successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 

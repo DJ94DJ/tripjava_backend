@@ -38,7 +38,7 @@ public class PlannerController {
     }
 
 
-//    4. 저장된 날짜 delete
+//    4. 저장된 플래너 delete
     @DeleteMapping("")
     public void deleteDate(@RequestParam("planner_no") long planner_no) {
         plannerService.deleteDate(planner_no);

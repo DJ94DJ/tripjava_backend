@@ -2,18 +2,31 @@ package com.trip.tripjava.service;
 
 import com.trip.tripjava.dto.UserDTO;
 import com.trip.tripjava.entity.UserEntity;
-import com.trip.tripjava.repository.UserRepository;
+import com.trip.tripjava.repository.*;
 import jakarta.persistence.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PlannerRepository plannerRepository;
+
+    @Autowired
+    TodayPlanRepository todayPlanRepository;
+
+    @Autowired
+    ChecklistRepository checklistRepository;
+
+    @Autowired
+    ItineraryRepository itineraryRepository;
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -87,6 +100,9 @@ public class UserService {
         if (user == null) {
             throw new RuntimeException("잘못된 입력입니다.");
         }
+
+
+
         userRepository.delete(user);
         return "회원 탈퇴 되었습니다.";
     }
