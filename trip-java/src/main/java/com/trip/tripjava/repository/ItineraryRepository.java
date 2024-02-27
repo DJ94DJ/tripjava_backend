@@ -18,4 +18,7 @@ public interface ItineraryRepository extends JpaRepository<ItineraryEntity, Long
     @Modifying
     @Query(value = "DELETE FROM itinerary WHERE itinerary_no = :id", nativeQuery = true)
     void deleteItineraryByIdWithNativeQuery(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM itinerary WHERE today_no = :todayNo", nativeQuery = true)
+    List<ItineraryEntity> findAllByTodayNo(@Param("todayNo") int todayNo);
 }
