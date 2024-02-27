@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ItineraryDTO {
     private long itinerary_no;
+    private long planner_no;
     private String start_time;
     private String end_time;
     private String memo;

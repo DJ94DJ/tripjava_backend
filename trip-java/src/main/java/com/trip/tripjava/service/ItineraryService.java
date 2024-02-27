@@ -1,8 +1,10 @@
 package com.trip.tripjava.service;
 
 import com.trip.tripjava.entity.ItineraryEntity;
+import com.trip.tripjava.entity.PlannerEntity;
 import com.trip.tripjava.entity.TodayPlanEntity;
 import com.trip.tripjava.repository.ItineraryRepository;
+import com.trip.tripjava.repository.PlannerRepository;
 import com.trip.tripjava.repository.TodayPlanRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -16,88 +18,31 @@ import java.util.Optional;
 @Slf4j
 public class ItineraryService {
 
-    private final ItineraryRepository itineraryRepository;
+    @Autowired
+    ItineraryRepository itineraryRepository;
 
     @Autowired
-    private TodayPlanRepository todayPlanRepository;
+    PlannerRepository plannerRepository;
 
-    @Autowired
-    public ItineraryService(ItineraryRepository itineraryRepository) {
-        this.itineraryRepository = itineraryRepository;
-    }
-
-    public ItineraryEntity saveItinerary(ItineraryEntity itinerary) {
+    // 일정 항목 추가
+    public ItineraryEntity addItineraryItem(ItineraryEntity itinerary) {
+        PlannerEntity planner = plannerRepository.findById(itinerary.getPlanner().getPlanner_no()).orElseThrow(() -> new RuntimeException("Checklist not found"));
+        itinerary.setPlanner(planner);
         return itineraryRepository.save(itinerary);
     }
 
-    // 전체 itinerary 불러오기
-    public List<ItineraryEntity> getAllItinerariesWithNativeQuery() {
-        return itineraryRepository.findAllWithNativeQuery();
+    // 일정 항목 수정
+    public ItineraryEntity updateItineraryItem(ItineraryEntity itinerary) {
+        return itineraryRepository.save(itinerary);
     }
 
-    public ItineraryEntity getItineraryById(Long id) {
-        Optional<ItineraryEntity> optionalItinerary = itineraryRepository.findById(id);
-        if (optionalItinerary.isPresent()) {
-            return optionalItinerary.get();
-        } else {
-            throw new RuntimeException("Itinerary not found for id :: " + id);
-        }
+    // 일정 항목 삭제
+    public void deleteItineraryItem(long itineraryId) {
+        itineraryRepository.deleteById(itineraryId);
     }
 
-
-//    public void deleteItineraryById(Long id) {
-//        Optional<ItineraryEntity> optionalItinerary = itineraryRepository.findById(id);
-//        if (optionalItinerary.isPresent()) {
-//            ItineraryEntity itinerary = optionalItinerary.get();
-//
-//            // itinerary에 연결된 today_plan 레코드를 모두 삭제
-//            TodayPlanEntity todayPlan = itinerary.getToday_no();
-//            if (todayPlan != null) {
-//                todayPlanRepository.delete(todayPlan);
-//            }
-//
-//            // itinerary 레코드 삭제
-//            itineraryRepository.deleteById(id);
-//        } else {
-//            throw new RuntimeException("Itinerary not found for id :: " + id);
-//        }
-//    }
-
-//    public void deleteItineraryById(Long id) {
-//        Optional<ItineraryEntity> optionalItinerary = itineraryRepository.findById(id);
-//        if (optionalItinerary.isPresent()) {
-//            ItineraryEntity itinerary = optionalItinerary.get();
-//
-//            // ItineraryEntity에 연결된 TodayPlanEntity 삭제
-//            if (itinerary.getToday_no() != null) {
-//                TodayPlanEntity todayPlan = itinerary.getToday_no();
-//                deleteTodayPlan(todayPlan);
-//            }
-//
-//            // ItineraryEntity 삭제
-//            itineraryRepository.deleteById(id);
-//        } else {
-//            throw new RuntimeException("Itinerary not found for id :: " + id);
-//        }
-//    }
-//
-//    private void deleteTodayPlan(TodayPlanEntity todayPlan) {
-//        try {
-//            // todayPlanRepository를 사용하여 주어진 TodayPlanEntity를 삭제합니다.
-//            todayPlanRepository.delete(todayPlan);
-//            // 삭제 작업이 성공적으로 수행되면 로그를 출력합니다.
-//            log.info("TodayPlanEntity 삭제 성공: {}", todayPlan);
-//        } catch (Exception e) {
-//            // 삭제 작업 중 예외가 발생하면 오류 메시지를 출력합니다.
-//            log.error("TodayPlanEntity 삭제 중 오류 발생: {}", e.getMessage());
-//            // 필요한 경우 예외를 다시 throw하여 상위 호출자에게 전파합니다.
-//            throw new RuntimeException("TodayPlanEntity 삭제 중 오류 발생", e);
-//        }
-//    }
-
-    @Transactional
-    public void deleteItineraryById(Long id) {
-        itineraryRepository.deleteItineraryByIdWithNativeQuery(id);
+    // 모든 일정 항목 가져오기
+    public List<ItineraryEntity> getAllItineraryItems(long planner_no) {
+        return itineraryRepository.findByPlanner_Planner_no(planner_no);
     }
-
 }

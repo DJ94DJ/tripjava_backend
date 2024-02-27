@@ -18,8 +18,8 @@ public class ItineraryEntity {
     private long itinerary_no;
 
     @ManyToOne
-    @JoinColumn(name = "today_no")
-    private TodayPlanEntity today_no;
+    @JoinColumn(name = "planner_no")
+    private PlannerEntity planner;
 
     @Column(name = "start_time", nullable = true)
     private String start_time;

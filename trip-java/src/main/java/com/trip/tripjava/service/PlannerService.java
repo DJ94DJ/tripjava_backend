@@ -58,14 +58,9 @@ public void deleteDate(long planner_no) {
     PlannerEntity plannerEntity = plannerRepository.findById(planner_no)
             .orElseThrow(()->new NoSuchElementException("삭제되지 않았습니다."));
 
-    // plannerEntity에 연결된 today_plan 레코드들을 모두 조회
-    List<TodayPlanEntity> todayPlans = todayPlanRepository.findByPlannerNo(planner_no);
-
-    // 각 TodayPlanEntity에 연결된 itinerary 레코드들을 모두 삭제
-    for (TodayPlanEntity todayPlan : todayPlans) {
-        List<ItineraryEntity> itineraries = itineraryRepository.findAllByTodayNo(todayPlan.getToday_no());
-        itineraryRepository.deleteAll(itineraries);
-    }
+    // plannerEntity에 연결된 itinerary 레코드들을 모두 삭제
+    List<ItineraryEntity> itineraryEntityList = itineraryRepository.findByPlanner_Planner_no(planner_no);
+    itineraryRepository.deleteAll(itineraryEntityList);
 
     // plannerEntity에 연결된 today_plan 레코드들을 모두 삭제
     List<TodayPlanEntity> todayPlanEntities = todayPlanRepository.findByPlannerNo(planner_no);

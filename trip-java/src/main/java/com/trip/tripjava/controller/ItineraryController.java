@@ -15,38 +15,32 @@ import java.util.List;
 @RequestMapping("/itinerary")
 @Slf4j
 public class ItineraryController {
-    private final ItineraryService itineraryService;
-
     @Autowired
-    public ItineraryController(ItineraryService itineraryService) {
-        this.itineraryService = itineraryService;
+    ItineraryService itineraryService;
+
+    // 일정 항목 조회
+    @GetMapping("/select/{planner_no}")
+    public List<ItineraryEntity> getAllItineraryItems(@PathVariable("planner_no") long planner_no) {
+        return itineraryService.getAllItineraryItems(planner_no);
     }
-    
-    // itinerary 추가하기
+
+    // 일정 항목 추가
     @PostMapping("/add")
-    public ResponseEntity<ItineraryEntity> addItinerary(@RequestBody ItineraryEntity itinerary) {
-        ItineraryEntity savedItinerary = itineraryService.saveItinerary(itinerary);
-        return new ResponseEntity<>(savedItinerary, HttpStatus.CREATED);
+    public ItineraryEntity createItineraryItem(@RequestBody ItineraryEntity itinerary) {
+        return itineraryService.addItineraryItem(itinerary);
     }
 
-    // 전체 itinerary 불러오기 
-    @GetMapping("/select")
-    public ResponseEntity<List<ItineraryEntity>> getAllItineraries() {
-        List<ItineraryEntity> itineraries = itineraryService.getAllItinerariesWithNativeQuery();
-        return new ResponseEntity<>(itineraries, HttpStatus.OK);
-    }
-    
-    // 해당 itinerary 불러오기
-    @GetMapping("/{id}")
-    public ResponseEntity<ItineraryEntity> getItineraryById(@PathVariable Long id) {
-        ItineraryEntity itinerary = itineraryService.getItineraryById(id);
-        return new ResponseEntity<>(itinerary, HttpStatus.OK);
+    // 일정 항목 수정
+    @PutMapping("/{itineraryId}")
+    public ItineraryEntity updateItineraryItem(@PathVariable("itineraryId") long itineraryId, @RequestBody ItineraryEntity itinerary) {
+        itinerary.setItinerary_no(itineraryId);
+        return itineraryService.updateItineraryItem(itinerary);
     }
 
-    @DeleteMapping("/del/{id}")
-    public ResponseEntity<String> deleteItineraryById(@PathVariable Long id) {
-        itineraryService.deleteItineraryById(id);
-        return new ResponseEntity<>("Itinerary deleted successfully", HttpStatus.OK);
+    // 일정 항목 삭제
+    @DeleteMapping("/{itineraryId}")
+    public void deleteItineraryItem(@PathVariable("itineraryId") long itineraryId) {
+        itineraryService.deleteItineraryItem(itineraryId);
     }
 
 }

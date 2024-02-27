@@ -30,6 +30,7 @@ public class UserController {
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .email(userDTO.getEmail())
                     .nickname(userDTO.getNickname())
+                    .status("activated") // 회원가입 시 활성 상태로 설정
                     .build();
 
             UserEntity responseUser = userService.signup(user);
