@@ -17,7 +17,7 @@ public class ChecklistEntity {
     private long checklist_no;
 
     @ManyToOne
-    @JoinColumn(name = "planner_no", referencedColumnName = "planner_no")
+    @JoinColumn(name = "planner_no")
     private PlannerEntity planner;
 
     @Column(name = "ingredient", nullable = false, length = 50)

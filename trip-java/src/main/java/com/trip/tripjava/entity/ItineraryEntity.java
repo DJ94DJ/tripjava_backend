@@ -17,8 +17,8 @@ public class ItineraryEntity {
     @Column(name = "itinerary_no", nullable = false)
     private long itinerary_no;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "today_no", referencedColumnName = "today_no")
+    @ManyToOne
+    @JoinColumn(name = "today_no")
     private TodayPlanEntity today_no;
 
     @Column(name = "start_time", nullable = true)

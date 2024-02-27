@@ -19,12 +19,12 @@ public class TodayPlanEntity {
     @Column(name = "today_no", nullable = false)
     private int today_no;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "contentid", referencedColumnName = "contentid")
+    @ManyToOne
+    @JoinColumn(name = "contentid")
     private TouristEntity contentid;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "planner_no", referencedColumnName = "planner_no")
+    @ManyToOne
+    @JoinColumn(name = "planner_no")
     private PlannerEntity planner_no;
 
     @Column(name = "today_date")
