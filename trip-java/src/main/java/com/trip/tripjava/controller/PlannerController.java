@@ -40,8 +40,13 @@ public class PlannerController {
 
 //    4. 저장된 날짜 delete
     @DeleteMapping("")
-    public void deleteDate(@RequestParam("planner_no") long planner_no) {
-        plannerService.deleteDate(planner_no);
+    public ResponseEntity<String> deleteDate(@RequestParam("planner_no") long planner_no) {
+        try {
+            plannerService.deleteDate(planner_no);
+            return ResponseEntity.ok().body("플래너가 삭제되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // 플래너 조회 (마이페이지)
