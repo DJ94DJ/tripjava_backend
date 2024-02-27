@@ -20,10 +20,11 @@ public class UserService {
 
     // 회원가입
     public UserEntity signup(UserEntity userEntity) {
-        if (userEntity == null) { // 입력받은 값이 null 일 경우
+        if (userEntity == null) {
             throw new RuntimeException("entity null");
         }
-
+        // 회원가입 시 status를 "activated"로 설정
+        userEntity.setStatus("activated");
         return userRepository.save(userEntity);
     }
 
@@ -87,7 +88,10 @@ public class UserService {
         if (user == null) {
             throw new RuntimeException("잘못된 입력입니다.");
         }
-        userRepository.delete(user);
+        // 회원 탈퇴 시 status를 "deactivated"로 설정
+        user.setStatus("deactivated");
+        userRepository.save(user);
+
         return "회원 탈퇴 되었습니다.";
     }
 }
